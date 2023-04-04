@@ -9,7 +9,9 @@ Install Node v16.14.0+.
 
 ## Features
 
-- [ ] Add a todo item
-- [ ] List todo item
-- [ ] Remove todo item
-- [ ] Mark todo item
+- [x] Add a todo item
+- [x] List todo item
+- [x] Remove todo item
+- [x] Mark todo item
+- [x] Sort by date
+- [ ] Filter by name
