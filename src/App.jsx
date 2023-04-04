@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TodoItem } from "./components/TodoItem";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -11,6 +12,25 @@ function App() {
     setSort(e.target.value);
   };
 
+  const handleMarkItemAsDone = (id, done) => {
+    setItems(
+      items.map((newItem) => {
+        if (newItem.id === id) {
+          return { ...newItem, done: !done };
+        }
+        return newItem;
+      })
+    );
+  };
+
+  const handleDeleteItem = (id) => {
+    setItems(
+      items.filter((newItem) => {
+        return newItem.id !== id;
+      })
+    );
+  };
+
   const itemComponents = items
     .sort((a, b) => {
       if (sort === "createdAtAsc") {
@@ -19,33 +39,16 @@ function App() {
       return b.createdAt - a.createdAt;
     })
     .map((item) => {
-      const handleChange = () => {
-        setItems(
-          items.map((newItem) => {
-            if (newItem.id === item.id) {
-              return { ...newItem, done: !item.done };
-            }
-            return newItem;
-          })
-        );
-      };
-
-      const handleClick = () => {
-        setItems(
-          items.filter((newItem) => {
-            return newItem.id !== item.id;
-          })
-        );
-      };
-
       return (
-        <div key={item.id}>
-          <input type="checkbox" checked={item.done} onChange={handleChange} />
-          {item.text} ({new Date(item.createdAt).toLocaleString()})
-          <button type="button" onClick={handleClick}>
-            X
-          </button>
-        </div>
+        <TodoItem
+          key={item.id}
+          id={item.id}
+          done={item.done}
+          text={item.text}
+          createdAt={item.createdAt}
+          onDeleteItem={handleDeleteItem}
+          onMarkItemAsDone={handleMarkItemAsDone}
+        />
       );
     });
 
@@ -61,7 +64,7 @@ function App() {
         id: Date.now(),
         text: formState.text,
         done: false,
-        createdAt: timestamp,
+        createdAt: Date.now(),
       },
     ]);
     setFormState({ ...formState, text: "" });
